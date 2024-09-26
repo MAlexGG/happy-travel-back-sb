@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
-        return null;
+        return userRespository.save(user);
     }
 
     static User unwrapUser(Optional<User> entity, Long id){
