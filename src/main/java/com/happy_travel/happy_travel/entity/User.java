@@ -1,11 +1,17 @@
 package com.happy_travel.happy_travel.entity;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -39,5 +45,9 @@ private String email;
 @NonNull
 @Column(nullable = false)
 private String password;
+
+@JsonIgnore
+@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+private List<Destination> destinations;
     
 }

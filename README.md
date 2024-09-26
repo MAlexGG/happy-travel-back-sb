@@ -8,7 +8,7 @@
 ***
 ## General Info
 
-This website is a social network where authorized users can create the trip of their dreams, all users will be able to see each user's trips and can give ratings. It's an API created with Laravel using Sanctum to provide tokens and this is the <a href="https://github.com/MAlexGG/happy-travel-front">Frontend Repo</a> that consumes it.
+This website is a social network where authorized users can create the trip of their dreams, all users will be able to see each user's trips and can give ratings. It's an API created with Spring Boot using Spring Security and JWT to provide tokens and this is the <a href="https://github.com/MAlexGG/happy-travel-front">Frontend Repo</a> that consumes it.
 
 ## Technologies
 It was developed with Spring Boot, Spring Security and JWT. It follow a MVC architecture, three layered, server-client style. Use a postgreSQL database.
