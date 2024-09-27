@@ -6,8 +6,10 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.happy_travel.happy_travel.entity.Destination;
+import com.happy_travel.happy_travel.entity.User;
 import com.happy_travel.happy_travel.exception.EntityNotFoundException;
 import com.happy_travel.happy_travel.repository.DestinationRepository;
+import com.happy_travel.happy_travel.repository.UserRespository;
 
 import lombok.AllArgsConstructor;
 
@@ -16,6 +18,7 @@ import lombok.AllArgsConstructor;
 public class DestinationServiceImpl implements DestinationService{
 
     DestinationRepository destinationRepository;
+    UserRespository userRespository;
 
     @Override
     public Destination getDestinationById(Long id) {
@@ -29,8 +32,11 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
     @Override
-    public Destination saveDestination(Destination destination) {
-        return null;
+    public Destination saveDestination(Destination destination, Long userId) {
+        Optional<User> user = userRespository.findById(userId);
+        User unwrappedUser = UserServiceImpl.unwrapUser(user, userId);
+        destination.setUser(unwrappedUser);
+        return destinationRepository.save(destination);
     }
 
     @Override
