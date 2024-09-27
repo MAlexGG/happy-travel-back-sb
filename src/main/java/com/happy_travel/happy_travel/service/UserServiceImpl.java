@@ -46,10 +46,14 @@ public class UserServiceImpl implements UserService {
         return userRespository.save(unwrappedUser);
     }
 
+    @Override
+    public void deleteUser(Long id) {
+        userRespository.deleteById(id);
+    }
+
     static User unwrapUser(Optional<User> entity, Long id){
         if(entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(id, User.class);
     }
-
     
 }
