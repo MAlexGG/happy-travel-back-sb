@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-
+import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
@@ -41,6 +40,11 @@ public class UserController {
     @PostMapping()
     public ResponseEntity<User> saveUser(@Valid @RequestBody User user) {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
+        return new ResponseEntity<>(userService.updateUser(id, updatedUser), HttpStatus.OK);
     }
     
     
