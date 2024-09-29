@@ -73,10 +73,16 @@ public class DestinationServiceImpl implements DestinationService{
         return destinations;
     }
 
+    @Override
+    public List<Destination> searchDestinationsByDescription(String description) {
+        List<Destination> destinations = destinationRepository.findByDescriptionContaining(description);
+        if(destinations.isEmpty()) throw new EmptyException();
+        return destinations;
+    }
+
     static Destination unwrapDestination(Optional<Destination> entity, Long id){
         if(entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(id, Destination.class);
     }
-
     
 }

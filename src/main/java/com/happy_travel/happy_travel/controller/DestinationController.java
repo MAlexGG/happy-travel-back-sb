@@ -61,9 +61,16 @@ public class DestinationController {
     }
     
     @GetMapping("/search")
-    public ResponseEntity<List<Destination>> getMethodName(@RequestParam String name) {
+    public ResponseEntity<List<Destination>> searchByName(@RequestParam String name) {
         return new ResponseEntity<List<Destination>>(destinationService.searchDestinationsByName(name), HttpStatus.OK);
     }
+
+    @GetMapping("/search-like")
+    public ResponseEntity<List<Destination>> searchByDescription(@RequestParam String description) {
+        return new ResponseEntity<List<Destination>>(destinationService.searchDestinationsByDescription(description), HttpStatus.OK);
+    }
+
+    
     
     
 }

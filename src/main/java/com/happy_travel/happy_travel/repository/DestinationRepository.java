@@ -10,4 +10,5 @@ import com.happy_travel.happy_travel.entity.User;
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
     List<Destination> findByUser(User user);
     List<Destination> findByName(String name);
+    List<Destination> findByDescriptionContaining(String destination);
 }
