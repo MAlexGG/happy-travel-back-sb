@@ -10,6 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.happy_travel.happy_travel.config.security.SecurityConstants;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,7 +31,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         String token = header.replace("Bearer ", "");
         
-        String user = JWT.require(Algorithm.HMAC512("UTwmZq4t7w!z$C&F)J@NcRfUjXn2r5u8xaKII3ND*G-KaPd?02p3s6v9y$B&E)"))
+        String user = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
         .build()
         .verify(token)
         .getSubject();

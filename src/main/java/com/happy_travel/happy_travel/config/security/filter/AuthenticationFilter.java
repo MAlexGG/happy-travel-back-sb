@@ -11,6 +11,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.happy_travel.happy_travel.config.security.SecurityConstants;
 import com.happy_travel.happy_travel.config.security.manager.CustomAuthenticationManager;
 import com.happy_travel.happy_travel.entity.User;
 
@@ -50,8 +51,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter{
             Authentication authResult) throws IOException, ServletException {
         String token = JWT.create()
         .withSubject(authResult.getName())
-        .withExpiresAt(new Date(System.currentTimeMillis() + 300000))
-        .sign(Algorithm.HMAC512("UTwmZq4t7w!z$C&F)J@NcRfUjXn2r5u8xaKII3ND*G-KaPd?02p3s6v9y$B&E)"));
+        .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
+        .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
         response.addHeader("Authorization",  "Bearer " + token);
     }
     
