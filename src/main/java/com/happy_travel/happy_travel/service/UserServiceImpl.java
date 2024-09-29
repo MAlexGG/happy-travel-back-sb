@@ -47,8 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public String deleteUser(Long id) {
+        getUserById(id);
         userRespository.deleteById(id);
+        return "Usuario con id " + id + " eliminado con éxito"; 
     }
 
     static User unwrapUser(Optional<User> entity, Long id){

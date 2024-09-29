@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,6 +17,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex){
+        ErrorResponse error  = new ErrorResponse(Arrays.asList(ex.getMessage()));
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler({EntityNotFoundException.class, EmptyException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
