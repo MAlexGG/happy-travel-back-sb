@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 
 
-
 @RestController
 @RequestMapping("/destination")
 @AllArgsConstructor
@@ -53,6 +52,12 @@ public class DestinationController {
     public ResponseEntity<String> deleteDestination(@PathVariable Long id){
         return new ResponseEntity<String>(destinationService.deleteDestination(id), HttpStatus.OK);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Destination>> getUserDestinations(@PathVariable Long id) {
+        return new ResponseEntity<List<Destination>>(destinationService.getUserDestinations(id), HttpStatus.OK);
+    }
+    
     
 }
 

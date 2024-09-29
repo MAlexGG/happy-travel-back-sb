@@ -61,7 +61,9 @@ public class DestinationServiceImpl implements DestinationService{
 
     @Override
     public List<Destination> getUserDestinations(Long userId) {
-        return null;
+        Optional<User> user = userRespository.findById(userId);
+        User unwrappedUser = UserServiceImpl.unwrapUser(user, userId);
+        return destinationRepository.findByUser(unwrappedUser);
     }
 
     static Destination unwrapDestination(Optional<Destination> entity, Long id){
