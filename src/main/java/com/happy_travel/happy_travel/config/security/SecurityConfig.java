@@ -8,6 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.happy_travel.happy_travel.config.security.filter.AuthenticationFilter;
+import com.happy_travel.happy_travel.config.security.filter.JWTAuthorizationFilter;
 import com.happy_travel.happy_travel.config.security.manager.CustomAuthenticationManager;
 
 import lombok.AllArgsConstructor;
@@ -21,15 +22,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
-        authenticationFilter.setFilterProcessesUrl("/auth");
+        authenticationFilter.setFilterProcessesUrl("/authenticate");
         http    
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 .requestMatchers(HttpMethod.GET, "/destination/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "user/register").permitAll()
-                .requestMatchers(HttpMethod.POST, "user/login").permitAll()
                 .anyRequest().authenticated())
             .addFilter(authenticationFilter)
+            .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
 
