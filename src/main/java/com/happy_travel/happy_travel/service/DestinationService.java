@@ -10,6 +10,6 @@ public interface DestinationService {
     List<Destination> getDestinations();
     Destination saveDestination(Destination destination, Long userId);
     Destination updateDestination(Long id, Destination updatedDestination);
-    void deleteDestination(Long id);
+    String deleteDestination(Long id);
     List<Destination> getUserDestinations(Long userId);
 }

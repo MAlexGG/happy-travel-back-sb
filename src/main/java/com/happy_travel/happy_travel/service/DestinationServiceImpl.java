@@ -53,8 +53,10 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
     @Override
-    public void deleteDestination(Long id) {
-        
+    public String deleteDestination(Long id) {
+        getDestinationById(id);
+        destinationRepository.deleteById(id);
+        return "Destino con id " + id + " eliminado con éxito";
     }
 
     @Override
