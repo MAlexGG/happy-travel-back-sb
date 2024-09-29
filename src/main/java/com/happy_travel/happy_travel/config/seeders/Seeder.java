@@ -1,6 +1,7 @@
 package com.happy_travel.happy_travel.config.seeders;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.happy_travel.happy_travel.entity.Destination;
@@ -12,7 +13,7 @@ import com.happy_travel.happy_travel.service.UserService;
 import jakarta.annotation.PostConstruct;
 
 @Component
-public class UserSeeder {
+public class Seeder {
 
     @Autowired
     UserRespository userRespository;
@@ -22,6 +23,9 @@ public class UserSeeder {
 
     @Autowired 
     DestinationRepository destinationRepository;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
     @PostConstruct
@@ -33,9 +37,9 @@ public class UserSeeder {
     public void seedUsers(){
 
         User[] users = new User[]{
-            new User(1L, "Eli", "eli@mail.com", "eli123", null),
-            new User(2L, "Gaby", "gaby@mail.com", "gaby123", null),
-            new User(3L, "Alex", "alex@mail.com", "alex123", null)
+            new User(1L, "Eli", "eli@mail.com", bCryptPasswordEncoder.encode("eli123"), null),
+            new User(2L, "Gaby", "gaby@mail.com", bCryptPasswordEncoder.encode("gaby123"), null),
+            new User(3L, "Alex", "alex@mail.com", bCryptPasswordEncoder.encode("alex123"), null)
         };
 
         for (int i = 0; i < users.length; i++) {

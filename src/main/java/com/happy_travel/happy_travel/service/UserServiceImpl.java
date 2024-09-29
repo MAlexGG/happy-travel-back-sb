@@ -3,6 +3,7 @@ package com.happy_travel.happy_travel.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.happy_travel.happy_travel.entity.User;
@@ -17,6 +18,7 @@ import lombok.AllArgsConstructor;
 public class UserServiceImpl implements UserService {
 
     UserRespository userRespository;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User getUserById(Long id) {
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user) {
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRespository.save(user);
     }
 
@@ -53,9 +56,14 @@ public class UserServiceImpl implements UserService {
         return "Usuario con id " + id + " eliminado con éxito"; 
     }
 
+    @Override
+    public User getUser(String name) {
+        Optional<User> user = userRespository.findByName(name);
+        return unwrapUser(user, null);
+    }
+
     static User unwrapUser(Optional<User> entity, Long id){
         if(entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(id, User.class);
     }
-    
 }
