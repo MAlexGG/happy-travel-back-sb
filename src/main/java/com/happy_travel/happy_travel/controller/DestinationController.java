@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -56,6 +58,11 @@ public class DestinationController {
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Destination>> getUserDestinations(@PathVariable Long id) {
         return new ResponseEntity<List<Destination>>(destinationService.getUserDestinations(id), HttpStatus.OK);
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<Destination>> getMethodName(@RequestParam String name) {
+        return new ResponseEntity<List<Destination>>(destinationService.searchDestinationsByName(name), HttpStatus.OK);
     }
     
     

@@ -12,4 +12,5 @@ public interface DestinationService {
     Destination updateDestination(Long id, Destination updatedDestination);
     String deleteDestination(Long id);
     List<Destination> getUserDestinations(Long userId);
+    List<Destination> searchDestinationsByName(String name);
 }
