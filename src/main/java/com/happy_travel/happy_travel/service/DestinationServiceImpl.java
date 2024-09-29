@@ -44,7 +44,12 @@ public class DestinationServiceImpl implements DestinationService{
 
     @Override
     public Destination updateDestination(Long id, Destination updatedDestination) {
-        return null;
+        Optional<Destination> destination = destinationRepository.findById(id);
+        Destination unwrappedDestination = unwrapDestination(destination, id);
+        unwrappedDestination.setName(updatedDestination.getName());
+        unwrappedDestination.setDescription(updatedDestination.getDescription());
+        unwrappedDestination.setImage(updatedDestination.getImage());
+        return destinationRepository.save(unwrappedDestination);
     }
 
     @Override

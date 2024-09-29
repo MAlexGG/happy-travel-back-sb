@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 
 @RestController
@@ -39,6 +41,11 @@ public class DestinationController {
     @PostMapping("/user/{id}")
     public ResponseEntity<Destination> saveDestination(@Valid @RequestBody Destination destination, @PathVariable Long id) {
         return new ResponseEntity<>(destinationService.saveDestination(destination, id),HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Destination> updateDestination(@PathVariable Long id, @Valid @RequestBody Destination destination) {
+        return new ResponseEntity<>(destinationService.updateDestination(id, destination), HttpStatus.OK);
     }
     
 }
