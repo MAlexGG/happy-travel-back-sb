@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.happy_travel.happy_travel.entity.Destination;
 import com.happy_travel.happy_travel.entity.User;
+import com.happy_travel.happy_travel.exception.EmptyException;
 import com.happy_travel.happy_travel.exception.EntityNotFoundException;
 import com.happy_travel.happy_travel.repository.DestinationRepository;
 import com.happy_travel.happy_travel.repository.UserRespository;
@@ -28,7 +29,9 @@ public class DestinationServiceImpl implements DestinationService{
 
     @Override
     public List<Destination> getDestinations() {
-        return null;
+        List<Destination> destinations = destinationRepository.findAll();
+        if(destinations.isEmpty()) throw new EmptyException();
+        return destinations;
     }
 
     @Override
