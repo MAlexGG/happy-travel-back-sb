@@ -3,10 +3,13 @@ package com.happy_travel.happy_travel.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.happy_travel.happy_travel.entity.Destination;
 import com.happy_travel.happy_travel.entity.User;
+import com.happy_travel.happy_travel.exception.CustomAccessDeniedException;
 import com.happy_travel.happy_travel.exception.EmptyException;
 import com.happy_travel.happy_travel.exception.EntityNotFoundException;
 import com.happy_travel.happy_travel.repository.DestinationRepository;
@@ -35,9 +38,9 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
     @Override
-    public Destination saveDestination(Destination destination, Long userId) {
-        Optional<User> user = userRespository.findById(userId);
-        User unwrappedUser = UserServiceImpl.unwrapUser(user, userId);
+    public Destination saveDestination(Destination destination) {
+        Optional<User> user = getAuthenticatedUser();
+        User unwrappedUser = UserServiceImpl.unwrapUser(user, (user.get()).getId());
         destination.setUser(unwrappedUser);
         return destinationRepository.save(destination);
     }
@@ -46,6 +49,9 @@ public class DestinationServiceImpl implements DestinationService{
     public Destination updateDestination(Long id, Destination updatedDestination) {
         Optional<Destination> destination = destinationRepository.findById(id);
         Destination unwrappedDestination = unwrapDestination(destination, id);
+        Optional<User> user = getAuthenticatedUser();
+        User unwrappedUser = UserServiceImpl.unwrapUser(user, (user.get()).getId());
+        if(unwrappedUser.getId() != unwrappedDestination.getUser().getId()) throw new CustomAccessDeniedException();
         unwrappedDestination.setName(updatedDestination.getName());
         unwrappedDestination.setDescription(updatedDestination.getDescription());
         unwrappedDestination.setImage(updatedDestination.getImage());
@@ -55,7 +61,7 @@ public class DestinationServiceImpl implements DestinationService{
     @Override
     public String deleteDestination(Long id) {
         getDestinationById(id);
-        destinationRepository.deleteById(id);
+        destinationRepository.deleteById(id);;
         return "Destino con id " + id + " eliminado con éxito";
     }
 
@@ -83,6 +89,13 @@ public class DestinationServiceImpl implements DestinationService{
     static Destination unwrapDestination(Optional<Destination> entity, Long id){
         if(entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(id, Destination.class);
+    }
+
+    private Optional<User> getAuthenticatedUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+        Optional<User> user = userRespository.findByUsername(username);
+       return user;
     }
     
 }

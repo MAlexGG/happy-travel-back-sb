@@ -39,10 +39,10 @@ public class DestinationController {
     public ResponseEntity<List<Destination>> getDestinations() {
         return new ResponseEntity<List<Destination>>(destinationService.getDestinations(), HttpStatus.OK);
     }
-    
-    @PostMapping("/user/{id}")
-    public ResponseEntity<Destination> saveDestination(@Valid @RequestBody Destination destination, @PathVariable Long id) {
-        return new ResponseEntity<>(destinationService.saveDestination(destination, id),HttpStatus.CREATED);
+  
+    @PostMapping
+    public ResponseEntity<Destination> saveDestination(@Valid @RequestBody Destination destination) {
+        return new ResponseEntity<>(destinationService.saveDestination(destination),HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

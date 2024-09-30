@@ -33,8 +33,8 @@ private Long id;
 
 @NotBlank(message = "El nombre no puede estar vacío")
 @NonNull
-@Column(nullable = false)
-private String name;
+@Column(nullable = false, unique = true)
+private String username;
 
 @NotBlank(message = "El mail no puede estar vacío")
 @NonNull

@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public User updateUser(Long id, User updatedUser) {
         Optional<User> user = userRespository.findById(id);
         User unwrappedUser = unwrapUser(user, id); 
-        unwrappedUser.setName(updatedUser.getName());
+        unwrappedUser.setUsername(updatedUser.getUsername());
         unwrappedUser.setEmail(updatedUser.getEmail());
         unwrappedUser.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
         return userRespository.save(unwrappedUser);
@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser(String name) {
-        Optional<User> user = userRespository.findByName(name);
+    public User getUser(String username) {
+        Optional<User> user = userRespository.findByUsername(username);
         return unwrapUser(user, null);
     }
 
