@@ -8,6 +8,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.happy_travel.happy_travel.config.security.filter.AuthenticationFilter;
+import com.happy_travel.happy_travel.config.security.filter.ExceptionHandlerFilter;
 import com.happy_travel.happy_travel.config.security.filter.JWTAuthorizationFilter;
 import com.happy_travel.happy_travel.config.security.manager.CustomAuthenticationManager;
 
@@ -29,6 +30,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/destination/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "user/register").permitAll()
                 .anyRequest().authenticated())
+            .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
             .addFilter(authenticationFilter)
             .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

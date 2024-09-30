@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
         User unwrappedUser = unwrapUser(user, id); 
         unwrappedUser.setName(updatedUser.getName());
         unwrappedUser.setEmail(updatedUser.getEmail());
-        unwrappedUser.setPassword(updatedUser.getPassword());
+        unwrappedUser.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
         return userRespository.save(unwrappedUser);
     }
 
