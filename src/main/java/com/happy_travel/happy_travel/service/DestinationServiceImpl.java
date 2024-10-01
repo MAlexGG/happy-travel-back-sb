@@ -39,29 +39,28 @@ public class DestinationServiceImpl implements DestinationService{
 
     @Override
     public Destination saveDestination(Destination destination) {
-        Optional<User> user = getAuthenticatedUser();
-        User unwrappedUser = UserServiceImpl.unwrapUser(user, (user.get()).getId());
-        destination.setUser(unwrappedUser);
+        User user = getAuthenticatedUser();
+        destination.setUser(user);
         return destinationRepository.save(destination);
     }
 
     @Override
     public Destination updateDestination(Long id, Destination updatedDestination) {
-        Optional<Destination> destination = destinationRepository.findById(id);
-        Destination unwrappedDestination = unwrapDestination(destination, id);
-        Optional<User> user = getAuthenticatedUser();
-        User unwrappedUser = UserServiceImpl.unwrapUser(user, (user.get()).getId());
-        if(unwrappedUser.getId() != unwrappedDestination.getUser().getId()) throw new CustomAccessDeniedException();
-        unwrappedDestination.setName(updatedDestination.getName());
-        unwrappedDestination.setDescription(updatedDestination.getDescription());
-        unwrappedDestination.setImage(updatedDestination.getImage());
-        return destinationRepository.save(unwrappedDestination);
+        Long userId = getAuthenticatedUser().getId();
+        Destination destination = destinationRepository.findByIdAndUserId(id, userId);
+        if(destination == null) throw new CustomAccessDeniedException();
+        destination.setName(updatedDestination.getName());
+        destination.setDescription(updatedDestination.getDescription());
+        destination.setImage(updatedDestination.getImage());
+        return destinationRepository.save(destination);
     }
-
+    
     @Override
     public String deleteDestination(Long id) {
-        getDestinationById(id);
-        destinationRepository.deleteById(id);;
+        Long userId = getAuthenticatedUser().getId();
+        Destination destination = destinationRepository.findByIdAndUserId(id, userId);
+        if(destination == null) throw new CustomAccessDeniedException();
+        destinationRepository.delete(destination);
         return "Destino con id " + id + " eliminado con éxito";
     }
 
@@ -91,11 +90,12 @@ public class DestinationServiceImpl implements DestinationService{
         else throw new EntityNotFoundException(id, Destination.class);
     }
 
-    private Optional<User> getAuthenticatedUser(){
+    private User getAuthenticatedUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getPrincipal().toString();
         Optional<User> user = userRespository.findByUsername(username);
-       return user;
+        User unwrappedUser = UserServiceImpl.unwrapUser(user, (user.get()).getId());
+       return unwrappedUser;
     }
     
 }

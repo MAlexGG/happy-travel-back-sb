@@ -3,6 +3,7 @@ package com.happy_travel.happy_travel.config.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,7 +17,10 @@ import lombok.AllArgsConstructor;
 
 @Configuration
 @AllArgsConstructor
-public class SecurityConfig {
+@EnableMethodSecurity(
+	prePostEnabled = true
+)
+public class SecurityConfig{
 
     private final CustomAuthenticationManager customAuthenticationManager;
 

@@ -11,4 +11,5 @@ public interface DestinationRepository extends JpaRepository<Destination, Long> 
     List<Destination> findByUser(User user);
     List<Destination> findByName(String name);
     List<Destination> findByDescriptionContaining(String destination);
+    Destination findByIdAndUserId(Long id, Long userId);
 }
