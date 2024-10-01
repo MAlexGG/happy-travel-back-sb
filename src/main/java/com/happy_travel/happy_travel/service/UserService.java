@@ -11,4 +11,6 @@ public interface UserService {
     User updateUser(Long id, User updatedUser);
     String deleteUser(Long id);
     User getUser(String name);
+    User getAuthenticatedUser();
+
 }

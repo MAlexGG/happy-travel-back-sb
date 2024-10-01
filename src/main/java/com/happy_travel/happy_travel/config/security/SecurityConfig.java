@@ -33,6 +33,7 @@ public class SecurityConfig{
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 .requestMatchers(HttpMethod.GET, "/destination/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "user/register").permitAll()
+                .requestMatchers(HttpMethod.GET, "user/all").permitAll()
                 .anyRequest().authenticated())
             .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
             .addFilter(authenticationFilter)

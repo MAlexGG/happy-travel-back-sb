@@ -3,6 +3,8 @@ package com.happy_travel.happy_travel.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +67,14 @@ public class UserServiceImpl implements UserService {
     static User unwrapUser(Optional<User> entity, Long id){
         if(entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(id, User.class);
+    }
+
+    @Override
+    public User getAuthenticatedUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getPrincipal().toString();
+        Optional<User> user = userRespository.findByUsername(username);
+        User unwrappedUser = UserServiceImpl.unwrapUser(user, (user.get()).getId());
+       return unwrappedUser;
     }
 }

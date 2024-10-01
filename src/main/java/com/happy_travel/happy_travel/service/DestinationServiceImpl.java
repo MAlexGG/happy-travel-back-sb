@@ -3,8 +3,6 @@ package com.happy_travel.happy_travel.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.happy_travel.happy_travel.entity.Destination;
@@ -23,6 +21,7 @@ public class DestinationServiceImpl implements DestinationService{
 
     DestinationRepository destinationRepository;
     UserRespository userRespository;
+    UserService userService;
 
     @Override
     public Destination getDestinationById(Long id) {
@@ -39,14 +38,14 @@ public class DestinationServiceImpl implements DestinationService{
 
     @Override
     public Destination saveDestination(Destination destination) {
-        User user = getAuthenticatedUser();
+        User user = userService.getAuthenticatedUser();
         destination.setUser(user);
         return destinationRepository.save(destination);
     }
 
     @Override
     public Destination updateDestination(Long id, Destination updatedDestination) {
-        Long userId = getAuthenticatedUser().getId();
+        Long userId = userService.getAuthenticatedUser().getId();
         Destination destination = destinationRepository.findByIdAndUserId(id, userId);
         if(destination == null) throw new CustomAccessDeniedException();
         destination.setName(updatedDestination.getName());
@@ -57,7 +56,7 @@ public class DestinationServiceImpl implements DestinationService{
     
     @Override
     public String deleteDestination(Long id) {
-        Long userId = getAuthenticatedUser().getId();
+        Long userId = userService.getAuthenticatedUser().getId();
         Destination destination = destinationRepository.findByIdAndUserId(id, userId);
         if(destination == null) throw new CustomAccessDeniedException();
         destinationRepository.delete(destination);
@@ -89,13 +88,4 @@ public class DestinationServiceImpl implements DestinationService{
         if(entity.isPresent()) return entity.get();
         else throw new EntityNotFoundException(id, Destination.class);
     }
-
-    private User getAuthenticatedUser(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getPrincipal().toString();
-        Optional<User> user = userRespository.findByUsername(username);
-        User unwrappedUser = UserServiceImpl.unwrapUser(user, (user.get()).getId());
-       return unwrappedUser;
-    }
-    
 }
