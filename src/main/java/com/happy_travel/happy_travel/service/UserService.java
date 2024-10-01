@@ -8,7 +8,7 @@ public interface UserService {
     User getUserById(Long id);
     List<User> getUsers();
     User saveUser(User user);
-    User updateUser(Long id, User updatedUser);
+    User updateUser(User updatedUser);
     String deleteUser(Long id);
     User getUser(String name);
     User getAuthenticatedUser();

@@ -43,9 +43,10 @@ public class UserController {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody User updatedUser) {
-        return new ResponseEntity<>(userService.updateUser(id, updatedUser), HttpStatus.OK);
+    //Para que no se tenga que pasar el dato de username desde el cliente hacer un UpdateRequest
+    @PutMapping
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User updatedUser) {
+        return new ResponseEntity<>(userService.updateUser(updatedUser), HttpStatus.OK);
     }
     
     @DeleteMapping("/{id}")
