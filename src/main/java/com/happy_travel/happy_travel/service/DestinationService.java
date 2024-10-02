@@ -13,6 +13,6 @@ public interface DestinationService {
     Destination updateDestination(Long id, Destination updatedDestination);
     String deleteDestination(Long id);
     DestinationByUserResponse getUserDestinations(Long userId);
-    List<Destination> searchDestinationsByName(String name);
-    List<Destination> searchDestinationsByDescription(String description);
+    List<DestinationResponse> searchDestinationsByName(String name);
+    List<DestinationResponse> searchDestinationsByDescription(String description);
 }

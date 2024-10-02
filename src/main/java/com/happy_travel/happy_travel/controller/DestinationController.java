@@ -61,12 +61,12 @@ public class DestinationController {
     }
     
     @GetMapping("/search")
-    public ResponseEntity<List<Destination>> searchByName(@RequestParam String name) {
+    public ResponseEntity<List<DestinationResponse>> searchByName(@RequestParam String name) {
         return new ResponseEntity<>(destinationService.searchDestinationsByName(name), HttpStatus.OK);
     }
 
     @GetMapping("/search-like")
-    public ResponseEntity<List<Destination>> searchByDescription(@RequestParam String description) {
+    public ResponseEntity<List<DestinationResponse>> searchByDescription(@RequestParam String description) {
         return new ResponseEntity<>(destinationService.searchDestinationsByDescription(description), HttpStatus.OK);
     }
 

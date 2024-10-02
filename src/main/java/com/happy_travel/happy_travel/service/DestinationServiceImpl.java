@@ -92,17 +92,30 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
     @Override
-    public List<Destination> searchDestinationsByName(String name) {
+    public List<DestinationResponse> searchDestinationsByName(String name) {
         List<Destination> destinations = destinationRepository.findByName(name);
         if(destinations.isEmpty()) throw new EmptyException();
-        return destinations;
+        return destinations.stream()
+            .map(destination -> new DestinationResponse(destination.getId(), destination.getName(), destination.getDescription(), destination.getImage(), new UserResponse(
+                destination.getUser().getId(),
+                destination.getUser().getUsername(),
+                destination.getUser().getEmail()
+            )))
+            .collect(Collectors.toList());
     }
 
     @Override
-    public List<Destination> searchDestinationsByDescription(String description) {
+    public List<DestinationResponse> searchDestinationsByDescription(String description) {
         List<Destination> destinations = destinationRepository.findByDescriptionContaining(description);
         if(destinations.isEmpty()) throw new EmptyException();
-        return destinations;
+        if(destinations.isEmpty()) throw new EmptyException();
+        return destinations.stream()
+            .map(destination -> new DestinationResponse(destination.getId(), destination.getName(), destination.getDescription(), destination.getImage(), new UserResponse(
+                destination.getUser().getId(),
+                destination.getUser().getUsername(),
+                destination.getUser().getEmail()
+            )))
+            .collect(Collectors.toList());
     }
 
     static Destination unwrapDestination(Optional<Destination> entity, Long id){
