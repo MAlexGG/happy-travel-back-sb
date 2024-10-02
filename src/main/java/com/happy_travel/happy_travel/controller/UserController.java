@@ -3,6 +3,7 @@ package com.happy_travel.happy_travel.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.happy_travel.happy_travel.dto.request.UserUpdateRequest;
 import com.happy_travel.happy_travel.entity.User;
 import com.happy_travel.happy_travel.service.UserService;
 
@@ -43,9 +44,8 @@ public class UserController {
         return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
-    //Para que no se tenga que pasar el dato de username desde el cliente hacer un UpdateRequest
     @PutMapping
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User updatedUser) {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody UserUpdateRequest updatedUser) {
         return new ResponseEntity<>(userService.updateUser(updatedUser), HttpStatus.OK);
     }
     

@@ -25,7 +25,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN); 
     }
 
-    @ExceptionHandler({DataIntegrityViolationException.class, UsernameCannotBeChangeException.class})
+    @ExceptionHandler({DataIntegrityViolationException.class})
     public ResponseEntity<Object> handleDataIntegrityViolation(DataIntegrityViolationException ex){
         ErrorResponse error  = new ErrorResponse(Arrays.asList(ex.getMessage()));
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);

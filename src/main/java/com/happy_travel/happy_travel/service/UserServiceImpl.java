@@ -8,10 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.happy_travel.happy_travel.dto.request.UserUpdateRequest;
 import com.happy_travel.happy_travel.entity.User;
 import com.happy_travel.happy_travel.exception.EmptyException;
 import com.happy_travel.happy_travel.exception.EntityNotFoundException;
-import com.happy_travel.happy_travel.exception.UsernameCannotBeChangeException;
 import com.happy_travel.happy_travel.repository.UserRespository;
 
 import lombok.AllArgsConstructor;
@@ -42,12 +42,9 @@ public class UserServiceImpl implements UserService {
         return userRespository.save(user);
     }
 
-    //Para que no se tenga que pasar el dato de username desde el cliente hacer un UpdateRequest
     @Override
-    public User updateUser(User updatedUser) {
+    public User updateUser(UserUpdateRequest updatedUser) {
         User user = getAuthenticatedUser();
-        if(!user.getUsername().equals(updatedUser.getUsername())) throw new UsernameCannotBeChangeException(user.getUsername());
-        user.setUsername(user.getUsername());
         user.setEmail(updatedUser.getEmail());
         user.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
         return userRespository.save(user);
