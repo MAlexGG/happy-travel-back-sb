@@ -2,6 +2,7 @@ package com.happy_travel.happy_travel.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.happy_travel.happy_travel.dto.request.UserUpdateRequest;
+import com.happy_travel.happy_travel.dto.response.UserGetAllResponse;
 import com.happy_travel.happy_travel.entity.User;
 import com.happy_travel.happy_travel.exception.EmptyException;
 import com.happy_travel.happy_travel.exception.EntityNotFoundException;
@@ -30,10 +32,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsers() {
+    public List<UserGetAllResponse> getUsers() {
         List<User> users = userRespository.findAll();
         if (users.isEmpty()) throw new EmptyException();
-        else return users;
+        return users.stream()
+            .map(user -> new UserGetAllResponse(user.getUsername(), user.getEmail()))
+            .collect(Collectors.toList());
     }
 
     @Override
