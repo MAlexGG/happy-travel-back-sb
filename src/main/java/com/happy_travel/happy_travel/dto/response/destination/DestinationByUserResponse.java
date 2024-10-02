@@ -1,22 +1,21 @@
 package com.happy_travel.happy_travel.dto.response.destination;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import java.util.List;
+
 import com.happy_travel.happy_travel.dto.response.user.UserResponse;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class DestinationResponse {
-
-    private Long id;
-    private String name;
-    private String description;
-    private String image;
+public class DestinationByUserResponse {
+    
     private UserResponse user;
+    private List<DestinationResponse> destinations;
 
 }

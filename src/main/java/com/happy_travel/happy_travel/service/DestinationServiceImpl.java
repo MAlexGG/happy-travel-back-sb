@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.happy_travel.happy_travel.dto.response.destination.DestinationByUserResponse;
 import com.happy_travel.happy_travel.dto.response.destination.DestinationResponse;
 import com.happy_travel.happy_travel.dto.response.user.UserResponse;
 import com.happy_travel.happy_travel.entity.Destination;
@@ -27,9 +28,14 @@ public class DestinationServiceImpl implements DestinationService{
     UserService userService;
 
     @Override
-    public Destination getDestinationById(Long id) {
+    public DestinationResponse getDestinationById(Long id) {
         Optional<Destination> destination = destinationRepository.findById(id);
-        return unwrapDestination(destination, id);
+        Destination unwrappedDestination = unwrapDestination(destination, id);
+        return new DestinationResponse(unwrappedDestination.getId(), unwrappedDestination.getName(), unwrappedDestination.getDescription(), unwrappedDestination.getImage(), new UserResponse(
+            unwrappedDestination.getUser().getId(),
+            unwrappedDestination.getUser().getUsername(),
+            unwrappedDestination.getUser().getEmail()
+        ));
     }
 
     @Override
@@ -73,10 +79,16 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
     @Override
-    public List<Destination> getUserDestinations(Long userId) {
+    public DestinationByUserResponse getUserDestinations(Long userId) {
         Optional<User> user = userRespository.findById(userId);
         User unwrappedUser = UserServiceImpl.unwrapUser(user, userId);
-        return destinationRepository.findByUser(unwrappedUser);
+        UserResponse userResponse = new UserResponse(unwrappedUser.getId(), unwrappedUser.getUsername(), unwrappedUser.getEmail());
+
+        List<Destination> destinations = destinationRepository.findByUser(unwrappedUser);
+        List<DestinationResponse> destinationsResponse = destinations.stream().map(destination -> new DestinationResponse(
+            destination.getId(), destination.getName(), destination.getDescription(), destination.getImage(), null
+        )).collect(Collectors.toList());
+        return new DestinationByUserResponse(userResponse, destinationsResponse);
     }
 
     @Override

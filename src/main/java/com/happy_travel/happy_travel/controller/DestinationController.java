@@ -3,6 +3,7 @@ package com.happy_travel.happy_travel.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.happy_travel.happy_travel.dto.response.destination.DestinationByUserResponse;
 import com.happy_travel.happy_travel.dto.response.destination.DestinationResponse;
 import com.happy_travel.happy_travel.entity.Destination;
 import com.happy_travel.happy_travel.service.DestinationService;
@@ -30,7 +31,7 @@ public class DestinationController {
     DestinationService destinationService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Destination> getDestinationById(@PathVariable Long id) {
+    public ResponseEntity<DestinationResponse> getDestinationById(@PathVariable Long id) {
         return new ResponseEntity<>(destinationService.getDestinationById(id), HttpStatus.OK);
     }
 
@@ -55,7 +56,7 @@ public class DestinationController {
     }
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<Destination>> getUserDestinations(@PathVariable Long id) {
+    public ResponseEntity<DestinationByUserResponse> getUserDestinations(@PathVariable Long id) {
         return new ResponseEntity<>(destinationService.getUserDestinations(id), HttpStatus.OK);
     }
     
