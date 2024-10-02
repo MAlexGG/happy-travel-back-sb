@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.happy_travel.happy_travel.dto.request.UserUpdateRequest;
-import com.happy_travel.happy_travel.dto.response.UserGetAllResponse;
+import com.happy_travel.happy_travel.dto.response.user.UserResponse;
 import com.happy_travel.happy_travel.entity.User;
 import com.happy_travel.happy_travel.service.UserService;
 
@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserGetAllResponse>> getUsers() {
+    public ResponseEntity<List<UserResponse>> getUsers() {
         return new ResponseEntity<>(userService.getUsers(), HttpStatus.OK); 
     }
     

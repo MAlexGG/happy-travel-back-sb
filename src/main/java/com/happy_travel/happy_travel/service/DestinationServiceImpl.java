@@ -2,9 +2,12 @@ package com.happy_travel.happy_travel.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.happy_travel.happy_travel.dto.response.destination.DestinationResponse;
+import com.happy_travel.happy_travel.dto.response.user.UserResponse;
 import com.happy_travel.happy_travel.entity.Destination;
 import com.happy_travel.happy_travel.entity.User;
 import com.happy_travel.happy_travel.exception.CustomAccessDeniedException;
@@ -30,10 +33,16 @@ public class DestinationServiceImpl implements DestinationService{
     }
 
     @Override
-    public List<Destination> getDestinations() {
+    public List<DestinationResponse> getDestinations() {
         List<Destination> destinations = destinationRepository.findAll();
         if(destinations.isEmpty()) throw new EmptyException();
-        return destinations;
+        return destinations.stream()
+            .map(destination -> new DestinationResponse(destination.getId(), destination.getName(), destination.getDescription(), destination.getImage(), new UserResponse(
+                destination.getUser().getId(),
+                destination.getUser().getUsername(),
+                destination.getUser().getEmail()
+            )))
+            .collect(Collectors.toList());
     }
 
     @Override

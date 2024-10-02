@@ -3,6 +3,7 @@ package com.happy_travel.happy_travel.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.happy_travel.happy_travel.dto.response.destination.DestinationResponse;
 import com.happy_travel.happy_travel.entity.Destination;
 import com.happy_travel.happy_travel.service.DestinationService;
 
@@ -34,8 +35,8 @@ public class DestinationController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Destination>> getDestinations() {
-        return new ResponseEntity<List<Destination>>(destinationService.getDestinations(), HttpStatus.OK);
+    public ResponseEntity<List<DestinationResponse>> getDestinations() {
+        return new ResponseEntity<>(destinationService.getDestinations(), HttpStatus.OK);
     }
   
     @PostMapping
@@ -45,27 +46,27 @@ public class DestinationController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Destination> updateDestination(@PathVariable Long id, @Valid @RequestBody Destination updatedDestination) {
-        return new ResponseEntity<Destination>(destinationService.updateDestination(id, updatedDestination), HttpStatus.OK);
+        return new ResponseEntity<>(destinationService.updateDestination(id, updatedDestination), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDestination(@PathVariable Long id){
-        return new ResponseEntity<String>(destinationService.deleteDestination(id), HttpStatus.OK);
+        return new ResponseEntity<>(destinationService.deleteDestination(id), HttpStatus.OK);
     }
 
     @GetMapping("/user/{id}")
     public ResponseEntity<List<Destination>> getUserDestinations(@PathVariable Long id) {
-        return new ResponseEntity<List<Destination>>(destinationService.getUserDestinations(id), HttpStatus.OK);
+        return new ResponseEntity<>(destinationService.getUserDestinations(id), HttpStatus.OK);
     }
     
     @GetMapping("/search")
     public ResponseEntity<List<Destination>> searchByName(@RequestParam String name) {
-        return new ResponseEntity<List<Destination>>(destinationService.searchDestinationsByName(name), HttpStatus.OK);
+        return new ResponseEntity<>(destinationService.searchDestinationsByName(name), HttpStatus.OK);
     }
 
     @GetMapping("/search-like")
     public ResponseEntity<List<Destination>> searchByDescription(@RequestParam String description) {
-        return new ResponseEntity<List<Destination>>(destinationService.searchDestinationsByDescription(description), HttpStatus.OK);
+        return new ResponseEntity<>(destinationService.searchDestinationsByDescription(description), HttpStatus.OK);
     }
 
     

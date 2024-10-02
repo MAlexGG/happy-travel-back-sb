@@ -10,7 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.happy_travel.happy_travel.dto.request.UserUpdateRequest;
-import com.happy_travel.happy_travel.dto.response.UserGetAllResponse;
+import com.happy_travel.happy_travel.dto.response.user.UserResponse;
 import com.happy_travel.happy_travel.entity.User;
 import com.happy_travel.happy_travel.exception.EmptyException;
 import com.happy_travel.happy_travel.exception.EntityNotFoundException;
@@ -32,11 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserGetAllResponse> getUsers() {
+    public List<UserResponse> getUsers() {
         List<User> users = userRespository.findAll();
         if (users.isEmpty()) throw new EmptyException();
         return users.stream()
-            .map(user -> new UserGetAllResponse(user.getUsername(), user.getEmail()))
+            .map(user -> new UserResponse(user.getId(), user.getUsername(), user.getEmail()))
             .collect(Collectors.toList());
     }
 
